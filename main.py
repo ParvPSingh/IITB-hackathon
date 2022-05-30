@@ -7,6 +7,8 @@ bg = pygame.image.load('space corridor.jpg')
 window.blit(bg, (0,0))
 pygame.display.update()
 
+#dfkonlknvlkd
+
 run=True
 while run:
     for event in pygame.event.get():
