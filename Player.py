@@ -6,7 +6,9 @@ class Player():
         self.y=y
         self.rec_width=rec_width
         self.rec_height=rec_height
-        self.velocity=15
+        self.velocity=7.5
+        self.square_side=rec_width
+        self.square_posX=rec_width
         self.left=False
         self.right=False
         self.walkCount=0
@@ -21,11 +23,13 @@ class Player():
 
         if self.standing==False:
             if self.right:
+                pass
                 #window.blit(walkRight[self.walkCount//3],(self.x,self.y))
-                self.walkCount+=1
+                #self.walkCount+=1
             elif self.left:
+                pass
                 #window.blit(walkLeft[self.walkCount//3],(self.x,self.y))
-                self.walkCount+=1
+                #self.walkCount+=1
         else:
             if self.right:
                 pass
@@ -33,5 +37,5 @@ class Player():
             else:
                 pass
                 #window.blit(walkLeft[0],(self.x,self.y))
-        pygame.draw.rect(window, (255,0,0), (self.x, self.y, self.rec_width, self.rec_height))
+        pygame.draw.rect(window, (255,0,0), (self.square_posX, self.y-self.square_side, self.rec_width, self.rec_height))
         pygame.display.flip()

@@ -5,60 +5,70 @@ pygame.init()
 screen_width=610
 screen_height=347
 window=pygame.display.set_mode((screen_width,screen_height))
+
 pygame.display.set_caption('SPACE PLUMBER')
-bg = pygame.image.load(('space corridor.jpg'))
-bgX = 0
-bgX2 = bg.get_width()
+
+bg = pygame.image.load(('space corridor.jpg')).convert()
+bgX = bg.get_width()
+stage_width=bgX*3
+stage_posX=0
+start_scrolling_posX=screen_width/2
 
 clock=pygame.time.Clock()
 
 def redraw_GameWindow():
-    #window.blit(bg, (0,0))
-    window.blit(bg, (bgX, 0))
-    window.blit(bg, (bgX2, 0))
+    relX=stage_posX%bgX
+    window.blit(bg, (relX-bgX, 0))
+    if relX<screen_width:
+        window.blit(bg, (relX, 0))
     man.draw(window)
+    #pygame.draw.rect(window, (255,0,0), (square_posX, man.y, man.rec_width, man.rec_height))
+    #pygame.display.flip()
     pygame.display.update()
 
-man=Player(10,281,64,64)
+man=Player(30,281,30,30)
+'''square_side=man.rec_width
+square_posX=man.rec_width'''
+#man.x=man.rec_width
+
 run=True
 while run:
-
-    redraw_GameWindow()
+    clock.tick(27)
 
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             run=False
 
     keys=pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] and man.x>man.velocity:
-        man.x-=man.velocity
-        bgX += 61
-        bgX2 += 61
-        if bgX < bg.get_width() * 1:
-            bgX = bg.get_width()
-    
-        if bgX2 < bg.get_width() * 1:
-            bgX2 = bg.get_width()
-
+    if keys[pygame.K_LEFT]:
+        man.velocity=-7.5
         man.left=True
         man.right=False
         man.standing=False
-    elif keys[pygame.K_RIGHT] and man.x<screen_width -man.rec_width -man.velocity:
-        man.x+=man.velocity
-        bgX -= 61
-        bgX2 -= 61
-        if bgX < bg.get_width() * -1:
-            bgX = bg.get_width()
-    
-        if bgX2 < bg.get_width() * -1:
-            bgX2 = bg.get_width()
-
+    elif keys[pygame.K_RIGHT]:
+        man.velocity=7.5
         man.right=True
         man.left=False
         man.standing=False
     else:
+        man.velocity=0
         man.standing=True
         man.walkCount=0
+    man.x+=man.velocity
+
+    if man.x>stage_width-man.square_side:
+        man.x=stage_width-man.square_side
+    if man.x<0:
+        man.x=0
+
+    if man.x<start_scrolling_posX:
+        man.square_posX=man.x
+    elif man.x>stage_width-start_scrolling_posX:
+        man.square_posX=man.x+screen_width-stage_width
+    else:
+        man.square_posX=start_scrolling_posX
+        stage_posX+= (-man.velocity)
+
     
     if not(man.isJump):
         '''if keys[pygame.K_UP] and y>velocity:
@@ -82,6 +92,6 @@ while run:
             man.isJump=False
             man.jumpCount=10
 
-    clock.tick(27)
+    redraw_GameWindow()
 
 pygame.quit()
