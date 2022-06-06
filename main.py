@@ -1,35 +1,34 @@
 import pygame
-from Player import Player
+from Player import *
 pygame.init()
 
-screen_width=610
-screen_height=347
+screen_width=1072
+screen_height=603
 window=pygame.display.set_mode((screen_width,screen_height))
 
 pygame.display.set_caption('SPACE PLUMBER')
 
-bg = pygame.image.load(('space corridor.jpg')).convert()
+bgFirst = pygame.image.load(('level 1 background first image.png')).convert()
+bg = pygame.image.load(('level 1 background.png')).convert()
 bgX = bg.get_width()
-stage_width=bgX*3
+stage_width = bgX*10
 stage_posX=0
 start_scrolling_posX=screen_width/2
 
 clock=pygame.time.Clock()
 
 def redraw_GameWindow():
+    window.blit(bgFirst, (0, 0))
     relX=stage_posX%bgX
     window.blit(bg, (relX-bgX, 0))
     if relX<screen_width:
         window.blit(bg, (relX, 0))
     man.draw(window)
     #pygame.draw.rect(window, (255,0,0), (square_posX, man.y, man.rec_width, man.rec_height))
-    #pygame.display.flip()
+    pygame.display.flip()
     pygame.display.update()
 
-man=Player(30,281,30,30)
-'''square_side=man.rec_width
-square_posX=man.rec_width'''
-#man.x=man.rec_width
+man=Player(30,580,100,100)
 
 run=True
 while run:
