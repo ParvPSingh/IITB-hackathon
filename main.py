@@ -1,5 +1,9 @@
+from random import random
 import pygame
+from Platforms import *
+from Platform import Platform
 from Player import *
+from random import randint
 pygame.init()
 
 screen_width=1072
@@ -11,28 +15,39 @@ pygame.display.set_caption('SPACE PLUMBER')
 bgFirst = pygame.image.load(('level 1 background first image.png')).convert()
 bg = pygame.image.load(('level 1 background.png')).convert()
 bgX = bg.get_width()
-stage_width = bgX*10
+stage_width= bgX*10
 stage_posX=0
 start_scrolling_posX=screen_width/2
 
 clock=pygame.time.Clock()
 
 def redraw_GameWindow():
-    window.blit(bgFirst, (0, 0))
-    relX=stage_posX%bgX
-    window.blit(bg, (relX-bgX, 0))
-    if relX<screen_width:
-        window.blit(bg, (relX, 0))
+    if man.x<screen_width+20:
+        relX=stage_posX%bgX
+        window.blit(bgFirst, (relX-bgX, 0))
+        if relX<screen_width:
+            window.blit(bgFirst, (relX, 0))
+    else:
+        relX=stage_posX%bgX
+        window.blit(bg, (relX-bgX, 0))
+        if relX<screen_width:
+            window.blit(bg, (relX, 0))
     man.draw(window)
-    #pygame.draw.rect(window, (255,0,0), (square_posX, man.y, man.rec_width, man.rec_height))
+    pygame.draw.rect(window, (255,0,0), (man.square_posX, man.y, man.rec_width, man.rec_height))
     pygame.display.flip()
     pygame.display.update()
 
-man=Player(30,580,100,100)
+man=Player(30,380,100,110)
+plates=Platforms()
+for i in range(0,50):
+    plates.add(Platform(randint(0,stage_width),randint(60,300),237,22))
+#plates.add(Platform(30,380,237,22))
 
 run=True
 while run:
     clock.tick(27)
+
+    plates.do(man,window)
 
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
@@ -54,6 +69,10 @@ while run:
         man.standing=True
         man.walkCount=0
     man.x+=man.velocity
+    if man.current_platform:
+        if not man.current_platform.test(man):
+            man.falling=True
+            man.current_platform=None
 
     if man.x>stage_width-man.square_side:
         man.x=stage_width-man.square_side
