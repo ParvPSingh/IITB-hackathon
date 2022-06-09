@@ -3,7 +3,7 @@ import pygame
 from Platforms import *
 from Platform import Platform
 from Player import *
-from random import randint
+from Levels import Levels
 pygame.init()
 
 screen_width=1072
@@ -15,9 +15,12 @@ pygame.display.set_caption('SPACE PLUMBER')
 bgFirst = pygame.image.load(('level 1 background first image.png')).convert()
 bg = pygame.image.load(('level 1 background.png')).convert()
 bgX = bg.get_width()
-stage_width= bgX*10
+stage_width= bgX*2
 stage_posX=0
 start_scrolling_posX=screen_width/2
+
+#plat_list = Levels.platform(1)
+platefarms = [Platform(200, 300), Platform(400, 400), Platform(700, 500), Platform(900, 300), Platform(2000, 100)]
 
 clock=pygame.time.Clock()
 
@@ -32,22 +35,29 @@ def redraw_GameWindow():
         window.blit(bg, (relX-bgX, 0))
         if relX<screen_width:
             window.blit(bg, (relX, 0))
+    
+    for plate in plates.container:
+            plate.draw(window)
+
     man.draw(window)
     pygame.draw.rect(window, (255,0,0), (man.square_posX, man.y, man.rec_width, man.rec_height))
     pygame.display.flip()
     pygame.display.update()
 
-man=Player(30,380,100,110)
-plates=Platforms()
+man=Player(30,480,100,110)
+'''plates=Platforms()
 for i in range(0,50):
     plates.add(Platform(randint(0,stage_width),randint(60,300),237,22))
-#plates.add(Platform(30,380,237,22))
+#plates.add(Platform(30,380,237,22))'''
+plates=Platforms()
 
 run=True
 while run:
     clock.tick(27)
 
-    plates.do(man,window)
+    #plat_list.draw(window)
+    plates.testCollision(man)
+
 
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
@@ -69,10 +79,10 @@ while run:
         man.standing=True
         man.walkCount=0
     man.x+=man.velocity
-    if man.current_platform:
+    '''if man.current_platform:
         if not man.current_platform.test(man):
-            man.falling=True
-            man.current_platform=None
+            #man.falling=True
+            man.current_platform=None'''
 
     if man.x>stage_width-man.square_side:
         man.x=stage_width-man.square_side
@@ -86,6 +96,8 @@ while run:
     else:
         man.square_posX=start_scrolling_posX
         stage_posX+= (-man.velocity)
+        for plate in plates.container:
+            plate.x+= (-man.velocity)
 
     
     if not(man.isJump):

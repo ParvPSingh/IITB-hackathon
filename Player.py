@@ -7,8 +7,8 @@ shootLeft = [pygame.image.load('l15.png'), pygame.image.load('l16.png'), pygame.
 
 class Player():
     def __init__(self,x,y,rec_width,rec_height) -> None:
-        self.x=x
-        self.y=y
+        self.x=x+(rec_width/2)
+        self.y=y+(rec_height/2)
         self.rec_width=rec_width
         self.rec_height=rec_height
         self.velocity=7.5
@@ -21,9 +21,10 @@ class Player():
         self.isJump=False
         self.jumpCount=10
         self.standing=True
-        self.falling=True
+        #self.falling=True
         self.current_platform=None
-        self.hitbox=(self.x+17,self.y+11,29,52)
+        self.hitbox=(self.square_posX,self.y-self.square_side,self.rec_width, self.rec_height)
+        
 
     def draw(self,window):
         if self.walkCount+1>=27:
@@ -41,5 +42,7 @@ class Player():
                 window.blit(walkRight[13],(self.square_posX, self.y-self.square_side))
             else:
                 window.blit(walkLeft[13],(self.square_posX, self.y-self.square_side))
-        #pygame.draw.rect(window, (255,0,0), (self.square_posX, self.y-self.square_side, self.rec_width, self.rec_height))
+        
+        self.hitbox=(self.square_posX,self.y-self.square_side,self.rec_width, self.rec_height)
+        pygame.draw.rect(window, (255,0,0), self.hitbox, 2)
         pygame.display.flip()
