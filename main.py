@@ -20,7 +20,7 @@ stage_posX=0
 start_scrolling_posX=screen_width/2
 
 #plat_list = Levels.platform(1)
-platefarms = [Platform(200, 300), Platform(400, 400), Platform(700, 500), Platform(900, 300), Platform(2000, 100)]
+#platefarms = [Platform(200, 300), Platform(400, 400), Platform(700, 500), Platform(900, 300), Platform(2000, 100)]
 
 clock=pygame.time.Clock()
 
@@ -36,9 +36,9 @@ def redraw_GameWindow():
         if relX<screen_width:
             window.blit(bg, (relX, 0))
     
-    for plate in plates.container:
-            plate.draw(window)
-
+    '''for plate in plates.container:
+            plate.draw(window)'''
+    plates.draw(window)
     man.draw(window)
     pygame.draw.rect(window, (255,0,0), (man.square_posX, man.y, man.rec_width, man.rec_height))
     pygame.display.flip()
@@ -79,10 +79,10 @@ while run:
         man.standing=True
         man.walkCount=0
     man.x+=man.velocity
-    '''if man.current_platform:
+    if man.current_platform:
         if not man.current_platform.test(man):
             #man.falling=True
-            man.current_platform=None'''
+            man.current_platform=None
 
     if man.x>stage_width-man.square_side:
         man.x=stage_width-man.square_side
@@ -97,7 +97,7 @@ while run:
         man.square_posX=start_scrolling_posX
         stage_posX+= (-man.velocity)
         for plate in plates.container:
-            plate.x+= (-man.velocity)
+            plate.x1+= (-man.velocity)
 
     
     if not(man.isJump):
@@ -120,6 +120,7 @@ while run:
             man.jumpCount-=1
         else:
             man.isJump=False
+            man.falling=True
             man.jumpCount=10
 
     redraw_GameWindow()

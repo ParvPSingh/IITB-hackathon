@@ -21,7 +21,7 @@ class Player():
         self.isJump=False
         self.jumpCount=10
         self.standing=True
-        #self.falling=True
+        self.falling=True
         self.current_platform=None
         self.hitbox=(self.square_posX,self.y-self.square_side,self.rec_width, self.rec_height)
         
