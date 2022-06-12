@@ -1,19 +1,20 @@
 import pygame
-
+from Player import *
 walkRight = [pygame.image.load('rer1.png'), pygame.image.load('rer2.png'), pygame.image.load('rer3.png'), pygame.image.load('rer4.png'), pygame.image.load('rer stand.png')]
 walkLeft = [pygame.image.load('rel1.png'), pygame.image.load('rel2.png'), pygame.image.load('rel3.png'), pygame.image.load('rel4.png'), pygame.image.load('rel stand.png')]
 
 
 class Enemy():
-    def __init__(self, x, y, width, height, end):
+    def __init__(self, x, y, width, height, start, end):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.end = end
-        self.path = [self.x, self.end]
+        self.start = start
+        self.path = [self.start, self.end]
         self.walkCount = 0
-        self.vel = 3
+        self.vel = 6
         self.hitbox = (self.x + 17, self.y + 2, 70, 110)
         self.health = 10
         self.visible = True
@@ -34,7 +35,7 @@ class Enemy():
             pygame.draw.rect(window, (255,0,0), (self.hitbox[0], self.hitbox[1] - 20, 50, 10))
             pygame.draw.rect(window, (0,128,0), (self.hitbox[0], self.hitbox[1] - 20, 50 - (5 * (10 - self.health)), 10))
             self.hitbox = (self.x + 17, self.y + 2, 70, 110)
-            pygame.draw.rect(window, (255,0,0), self.hitbox,2)
+            #pygame.draw.rect(window, (255,0,0), self.hitbox,2)
 
     def move(self):
         if self.vel > 0:

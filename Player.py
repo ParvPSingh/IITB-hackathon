@@ -1,9 +1,8 @@
 import pygame
+import time
 
 walkRight = [pygame.image.load('ar_01.png'), pygame.image.load('ar_02.png'), pygame.image.load('ar_03.png'), pygame.image.load('ar_04.png'), pygame.image.load('ar_05.png'), pygame.image.load('ar_06.png'), pygame.image.load('ar_07.png'), pygame.image.load('ar_08.png'), pygame.image.load('ar_09.png'), pygame.image.load('ar_10.png'), pygame.image.load('ar_11.png'), pygame.image.load('ar_12.png'), pygame.image.load('ar_13.png'), pygame.image.load('ar_16.png')]
-walkLeft = [pygame.image.load('al_13.png'), pygame.image.load('al_12.png'), pygame.image.load('al_11.png'), pygame.image.load('al_10.png'), pygame.image.load('al_09.png'), pygame.image.load('al_08.png'), pygame.image.load('al_07.png'), pygame.image.load('al_06.png'), pygame.image.load('al_05.png'), pygame.image.load('al_04.png'), pygame.image.load('al_03.png'), pygame.image.load('al_02.png'), pygame.image.load('al_01.png'), pygame.image.load('al_16.png')]
-shootRight = [pygame.image.load('r15.png'), pygame.image.load('r16.png'), pygame.image.load('r17.png'), pygame.image.load('r18.png'), pygame.image.load('r19.png'), pygame.image.load('r20.png'), pygame.image.load('r21.png'), pygame.image.load('r22.png'), pygame.image.load('r23.png'), pygame.image.load('r24.png'), pygame.image.load('r25.png')]
-shootLeft = [pygame.image.load('l15.png'), pygame.image.load('l16.png'), pygame.image.load('l17.png'), pygame.image.load('l18.png'), pygame.image.load('l19.png'), pygame.image.load('l20.png'), pygame.image.load('l21.png'), pygame.image.load('l22.png'), pygame.image.load('l23.png'), pygame.image.load('l24.png'), pygame.image.load('l25.png')]
+walkLeft = [pygame.image.load('al_01.png'), pygame.image.load('al_02.png'), pygame.image.load('al_03.png'), pygame.image.load('al_04.png'), pygame.image.load('al_05.png'), pygame.image.load('al_06.png'), pygame.image.load('al_07.png'), pygame.image.load('al_08.png'), pygame.image.load('al_09.png'), pygame.image.load('al_10.png'), pygame.image.load('al_11.png'), pygame.image.load('al_12.png'), pygame.image.load('al_13.png'), pygame.image.load('al_16.png')]
 
 class Player():
     def __init__(self,x,y,rec_width,rec_height) -> None:
@@ -11,7 +10,7 @@ class Player():
         self.y=y-30
         self.rec_width=rec_width
         self.rec_height=rec_height
-        self.velocity=7.5
+        self.velocity=8
         self.square_side=rec_width
         self.square_posX=rec_width
         self.left=False
@@ -44,24 +43,26 @@ class Player():
                 window.blit(walkLeft[13],(self.square_posX, self.y))
         
         self.hitbox=(self.square_posX+20,self.y+20,self.rec_width-40, self.rec_height+10)
-        pygame.draw.rect(window, (255,0,0), self.hitbox, 2)
+        #pygame.draw.rect(window, (255,0,0), self.hitbox, 2)
         pygame.display.flip()
 
     def hit(self,window):
         self.isJump = False
         self.jumpCount = 10
-        self.x = 100
-        self.y = 450
+        self.x = self.x-500
+        self.y = 20
         self.walkCount = 0
         font1 = pygame.font.SysFont('comicsans', 100)
-        text = font1.render('-5', 1, (255,0,0))
+        text = font1.render('-5', 1, (200,0,0))
         window.blit(text, (250 - (text.get_width()/2),200))
         pygame.display.update()
+        while self.y<450:
+            self.y+=1
         i = 0
-        while i < 200:
-            pygame.time.delay(10)
+        while i < 150:
+            pygame.time.delay(1)
             i += 1
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    i = 201
+                    i = 11
                     pygame.quit()

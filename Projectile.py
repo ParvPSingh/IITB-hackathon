@@ -1,12 +1,16 @@
 import pygame
+
+poop_bullet = pygame.image.load("assets/poop_bullet.png")
+
 class Projectile(object):
-    def __init__(self,x,y,radius,color,facing):
+    def __init__(self,x,y,hw,color,facing):
         self.x = x
         self.y = y
-        self.radius = radius
+        self.hw = 14.5
         self.color = color
         self.facing = facing
-        self.vel = 8 * facing
+        self.vel = 18 * facing
 
-    def draw(self,win):
-        pygame.draw.circle(win, self.color, (self.x,self.y), self.radius)
+    def draw(self,window):
+        #pygame.draw.circle(window, self.color, (self.x,self.y), self.radius)
+        window.blit(poop_bullet, (self.x, self.y))
