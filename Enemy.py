@@ -51,6 +51,7 @@ class Enemy():
                 self.vel = self.vel * -1
                 self.walkCount = 0
 
+    #hit function for robot
     def hit(self):
         if self.health > 0:
             self.health -= 1

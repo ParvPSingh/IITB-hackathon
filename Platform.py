@@ -3,6 +3,7 @@ from Player import *
 
 platform_images = [pygame.image.load('platform tri edges.png'), pygame.image.load('platform rectangle.png')]
 
+#not useful
 '''class Platform():
     def __init__(self,x,y,width,height) -> None:
         self.x1=x

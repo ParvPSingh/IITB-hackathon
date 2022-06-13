@@ -5,23 +5,24 @@ from Platforms import *
 from Player import *
 from Projectile import Projectile
 from Enemy import *
-pygame.init()
+pygame.init() #initialising pygame
 
 screen_width=1072
 screen_height=603
-window=pygame.display.set_mode((screen_width,screen_height))
+window=pygame.display.set_mode((screen_width,screen_height)) #setting up window
 
 BG = pygame.image.load("assets/Background.png")
 
 def get_font(size):
-    return pygame.font.Font("assets/font.ttf", size)
+    return pygame.font.Font("assets/font.ttf", size) #font initialising
 
+#main play function starts
 def play():
     while True:
-        PLAY_MOUSE_POS = pygame.mouse.get_pos()
 
         #window.fill("black")
 
+        #loading all the images and sounds
         bulletSound = pygame.mixer.Sound('poop gun.mp3')
         hitSound = pygame.mixer.Sound('robot hit.wav')
         robot_dieSound = pygame.mixer.Sound('power-down.mp3')
@@ -40,6 +41,7 @@ def play():
 
         pygame.display.set_caption('SPACE PLUMBER')
 
+        #setting up all the window variables
         bg = pygame.image.load(('level 1 background.png')).convert()
         bgX = bg.get_width()
         stage_width= bgX*8
@@ -48,6 +50,7 @@ def play():
 
         clock=pygame.time.Clock()
 
+        #main draw function for all classes
         def redraw_GameWindow():
             relX=stage_posX%bgX
             window.blit(bg, (relX-bgX, 0))
@@ -66,6 +69,7 @@ def play():
             pygame.display.flip()
             pygame.display.update()
 
+        #setting up instances of all classes
         man=Player(30,480,110,110)
         font = pygame.font.SysFont('comicsans', 30, True)
         #robot = Enemy(780, 480, 110, 110, 980)
@@ -74,34 +78,39 @@ def play():
         bullets = []
         robots=[Enemy(300, 480, 110, 110, man.square_posX, man.square_posX+200), Enemy(6500, 480, 110, 110, man.square_posX, man.square_posX+500), Enemy(5500, 480, 110, 110, man.square_posX, man.square_posX+350), Enemy(5000, 480, 110, 110, man.square_posX, man.square_posX+400), Enemy(7500, 480, 110, 110, man.square_posX, man.square_posX+250), Enemy(6000, 480, 110, 110, man.square_posX, man.square_posX+300), Enemy(8000, 480, 110, 110, man.square_posX, man.square_posX+700), Enemy(5000, 480, 110, 110, man.square_posX, man.square_posX+600), Enemy(6000, 480, 110, 110, man.square_posX, man.square_posX+300), Enemy(6500, 480, 110, 110, man.square_posX, man.square_posX+500), Enemy(7000, 480, 110, 110, man.square_posX, man.square_posX+300), Enemy(1000, 480, 110, 110, man.square_posX, 550), Enemy(780, 480, 110, 110, man.square_posX, 1200), Enemy(2400, 480, 110, 110, man.square_posX, 980), Enemy(1880, 480, 110, 110, man.square_posX, 2180), Enemy(4500, 480, 110, 110, man.square_posX, 3480), Enemy(4500, 480, 110, 110, man.square_posX, 6800), Enemy(6900, 480, 110, 110, man.square_posX, 5800), Enemy(6300, 480, 110, 110, man.square_posX, 7600), Enemy(8000, 480, 110, 110, man.square_posX, 7500)]
 
+        #main loop for game starts
         run=True
         while run:
             clock.tick(27)
 
-            #plates.testCollision(man)
+            #plates.testCollision(man) was going to use this for the platforms
 
+            #for quitting the game
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:
                     run=False
 
+            #to check if a robot touches the astronaut
             for robo in robots:
                 if robo.visible == True:
                     if man.hitbox[1] < robo.hitbox[1] + robo.hitbox[3] and man.hitbox[1] + man.hitbox[3] > robo.hitbox[1]:
                         if man.hitbox[0] + man.hitbox[2] > robo.hitbox[0] and man.hitbox[0] < robo.hitbox[0] + robo.hitbox[2]:
                             man.hit(window)
-                            score -= 5
+                            #score -= 5
                 else:
+                    #initially plan was to blit a broken robot once it's popped from that position
                     derX=robo.x
                     derY=robo.y
                     window.blit(dead_robot, (derX, derY))
                     robots.pop(robots.index(robo))
                     
-
+            #To set a limit of number of bullets to be appended at once
             if shootLoop > 0:
                 shootLoop += 1
             if shootLoop > 3:
                 shootLoop = 0
             
+            #to check if a bullet hits a robot and to pop them from the list once their work is over
             for robo in robots:
                 for bullet in bullets:
                     if bullet.y - bullet.hw < robo.hitbox[1] + robo.hitbox[3] and bullet.y + bullet.hw > robo.hitbox[1]:
@@ -120,6 +129,7 @@ def play():
                 else:
                     bullets.pop(bullets.index(bullet))
 
+            #to do something once a key is pressed
             keys=pygame.key.get_pressed()
 
             if keys[pygame.K_SPACE] and shootLoop == 0:
@@ -166,12 +176,14 @@ def play():
                     #man.falling=True
                     man.current_platform=None'''
 
+            #to set the range for astronaut
             if man.x>stage_width-man.square_side:
                 man.x=stage_width-man.square_side
                 run=False
             if man.x<0:
                 man.x=0
 
+            #to set background scrolling and the player's position on one place
             if man.x<start_scrolling_posX:
                 man.square_posX=man.x
             elif man.x>stage_width-start_scrolling_posX:
@@ -184,7 +196,7 @@ def play():
                 '''for plate in plates.container:
                     plate.x1+= (-man.velocity)'''
 
-            
+            #jump function
             if not(man.isJump):
                 '''if keys[pygame.K_UP] and y>velocity:
                     y-=velocity
@@ -209,7 +221,7 @@ def play():
                     man.jumpCount=10
 
             redraw_GameWindow()
-        end_screen()
+        end_screen() #gives the end screen
     
 
 def end_screen():
@@ -218,8 +230,8 @@ def end_screen():
 
         window.fill((255,255,255,0.2))
 
-        OPTIONS_TEXT = get_font(55).render('YOU WIN!!!', True, "Black")
-        OPTIONS_RECT = OPTIONS_TEXT.get_rect()
+        OPTIONS_TEXT = get_font(55).render('THE END', True, "Black")
+        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 260))
         window.blit(OPTIONS_TEXT, OPTIONS_RECT)
         #window.blit(howtoplay,(20,20))
 
@@ -239,6 +251,7 @@ def end_screen():
 
         pygame.display.update()
     
+#gives options screen
 def options():
     while True:
         howtoplay = pygame.image.load(('assets/How to play.png')).convert()
@@ -264,6 +277,7 @@ def options():
 
         pygame.display.update()
 
+#gives menu screen
 def main_menu():
     music = pygame.mixer.music.load('assets/main_menu_music.mp3')
     pygame.mixer.music.play(-1)

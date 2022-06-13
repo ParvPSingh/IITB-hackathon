@@ -4,6 +4,7 @@ from Player import Player
 
 platform_images = [pygame.image.load('platform tri edges.png'), pygame.image.load('platform rectangle.png')]
 
+#not useful
 class Platforms():
     def __init__(self) -> None:
         self.container=[Platform(200, 300), Platform(400, 400), Platform(700, 500), Platform(900, 300), Platform(2000, 100)]

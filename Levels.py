@@ -1,6 +1,7 @@
 import pygame
 from Platform import *
 
+#not useful
 class Levels():
     def platform( lvl ):
         plat_list = []
