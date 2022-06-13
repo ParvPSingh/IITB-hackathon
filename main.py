@@ -59,7 +59,7 @@ def play():
 
             for bullet in bullets:
                 bullet.draw(window)
-            text = font.render('Score: ' + str(score), 1, (0,0,0))
+            text = font.render('Score: ' + str(score), 1, (0,155,0))
             window.blit(text, (350, 10))
             #plates.draw(window)
             man.draw(window)
@@ -228,9 +228,11 @@ def end_screen():
     while True:
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
 
-        window.fill((255,255,255,0.2))
+        #window.fill((255,255,255,0.2))
+        image = pygame.Surface([640,480], pygame.SRCALPHA, 32)
+        image = image.convert_alpha()
 
-        OPTIONS_TEXT = get_font(55).render('THE END', True, "Black")
+        OPTIONS_TEXT = get_font(55).render('THE END', True, "Green")
         OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 260))
         window.blit(OPTIONS_TEXT, OPTIONS_RECT)
         #window.blit(howtoplay,(20,20))
